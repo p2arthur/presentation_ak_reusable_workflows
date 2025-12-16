@@ -1,0 +1,84 @@
+# Algokit Shared CI/CD: Graduating from MakerX
+
+## 1. The Vision & Strategy
+
+### Goal
+Centralize and standardize our core CI/CD processes for all Algokit TypeScript repositories, starting with the **on-main-merge** workflow.
+
+### Strategic Move
+This initiative directly supports **graduating our dependency from MakerX**.
+
+* **Control:** Moving from External (MakerX) to Internal (algokit-shared-config) gives us full control over release logic and updates.
+* **Maintenance:** Moving from Distributed to Centralized provides a single source of truth for all CI logic.
+* **Efficiency:** Moving from Ad-hoc to Optimized Orchestration enables better performance via structured parallelization.
+
+---
+
+## 2. The Problem: Boilerplate & Duplication
+
+Before, every TypeScript repository had to maintain a large, complex, and nearly identical workflow to handle the merge-to-main logic:
+
+* Node setup
+* Lint/Test/Build sequencing
+* Artifact creation/upload
+* Semantic Release setup and execution
+
+> Goal: Remove the Logic, Keep the Contract.
+
+---
+
+## 3. The Solution: The Local Caller (Project-Specific)
+
+The local repository's workflow is now reduced to a minimal wrapper. It handles **only** the project-specific secrets and security steps, then delegates the rest to the shared workflow.
+
+*The local caller workflow (`on-main-merge.yml`) defines two main jobs:*
+
+1.  **Generate Bot Token:** Securely creates a temporary, job-scoped bot token.
+2.  **On Main Merge:** Calls the reusable workflow (`algorandfoundation/algokit-shared-config/.github/workflows/on-merge-main.yml`), passing required secrets and the generated bot token.
+
+> Key Takeaway: The local repo is now cleaner and only handles the secrets needed to satisfy the shared contract.
+
+---
+
+## 4. The Implementation: Shared Logic (The Workhorse)
+
+The core logic lives in `algokit-shared-config`. The `on-merge-main.yml` orchestrates the entire process (Build, Test, Release) and utilizes other reusable workflows like `release-package.yml`.
+
+### Example: Reusable `release-package.yml`
+
+This file encapsulates all the complex steps (downloading artifacts, setting up git, installing tools, running semantic-release). It runs as a `composite` action, taking `BOT_TOKEN` and `NPM_TOKEN` as inputs and using them in the `semantic-release` step.
+
+> Key Takeaway: This composite action is now a standardized, versioned release API that every repository consumes. We only update node-version, actions/@v versions, or semantic-release logic here.
+
+---
+
+## 5. The Demo: Orchestration Flow
+
+*(This is where you switch to the live GitHub Actions run.)*
+
+Demonstrate the execution flow:
+
+1.  **Start:** The local `on-main-merge.yml` execution.
+2.  **Job 1 (Local):** Show the quick execution of **Generate Bot Token**.
+3.  **Job 2 (Reusable Call):** Click on the **Run Shared On Merge Main Workflow** job.
+4.  **Orchestration View:** Point out that the execution now shows the steps defined in the reusable workflow (`algokit-shared-config`).
+5.  **Parallelization:** If the main reusable workflow orchestrates parallel jobs (e.g., build and test running simultaneously, followed by release), highlight how this structure improves overall CI time.
+6.  **Transparency:** Show that the secrets (BOT_TOKEN, NPM_TOKEN) are passed securely as inputs.
+
+---
+
+## 6. Next Steps & Collaboration
+
+### Next Steps for Reusable Workflows (The Process)
+
+* Integrate this pattern into all core Algokit TypeScript repositories.
+* Abstract other common patterns (e.g., release candidate generation, docs building).
+
+### Collaboration Opportunity for Lucca (The Config)
+
+Your work on reusable configurations is the perfect complement to this initiative.
+
+* **Workflows (My Focus):** Focuses on the CI/CD Process (**The How**), standardizing the **sequence** of actions (Node setup, build, release).
+* **Configurations (Lucca's Focus):** Focuses on the Tooling Rules (**The What**), standardizing config files for tools like `eslint`, `prettier`, and `.releaserc.json`.
+
+By collaborating, we ensure that every Algokit TypeScript repository has a **standardized process** (my workflow) and **standardized compliance** (Lucca's configs).
