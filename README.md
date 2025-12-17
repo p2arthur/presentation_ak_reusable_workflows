@@ -1,5 +1,14 @@
 # Algokit Shared CI/CD: Graduating from MakerX
 
+## Experiment repos and branches
+
+- Algokit shared config - Holds the reusable workflows and composable actions.
+  https://github.com/algorandfoundation/algokit-shared-config/tree/ci/release-workflow/.github/workflows
+
+  - on-main-merge.yml workflow is supposed to orchestrate the often repeated release.yml local workflow
+
+- Algokit subscriber - Has the code to call the reusable complex on-merge-main workflow -https://github.com/p2arthur/algokit-subscriber-ts-forked/tree/pr/ak-release-workflow
+
 ## 1. The Vision & Strategy
 
 ### Goal
@@ -70,7 +79,7 @@ This file encapsulates all the complex steps (downloading artifacts, setting up 
 
 ---
 
-## 5. The Demo: Orchestration Flow
+## 5. The Demo: Orchestration Flow - https://github.com/p2arthur/algokit-subscriber-ts-forked/actions/runs/20230962845
 
 ![alt text](image.png)
 
