@@ -1,3 +1,20 @@
+# AlgoKit Shared Workflow Notes
+
+Presentation and taxonomy notes about reusable AlgoKit CI, documentation, and release workflows.
+
+The documents link to experimental repositories and branches. They record the design discussion at the time, rather than guaranteeing those branches or workflows remain current.
+
+## Start reading
+
+- [`taxonomy_audit.md`](taxonomy_audit.md)
+
+## Existing project notes
+
+The original guide below preserves project-specific context, credits, examples, and historical setup details. Referenced providers, branches, and deployments may have changed since it was written.
+
+<details>
+<summary>Read the original project documentation</summary>
+
 # Algokit Shared CI/CD: Graduating from MakerX
 
 ## Experiment repos and branches
@@ -100,3 +117,5 @@ Demonstrate the execution flow:
 
 - Integrate this pattern into all core Algokit TypeScript repositories.
 - Abstract other common CI/CD patterns to run for **Python projects**, extending the benefits of standardization beyond TypeScript.
+
+</details>
